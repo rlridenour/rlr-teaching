@@ -1,4 +1,4 @@
-;;; test.el --- a simple package                     -*- lexical-binding: t; -*-
+;;; rlr-teaching.el --- a simple package                     -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2014  Nic Ferrier
 
@@ -31,4 +31,4 @@
 
 
 (provide 'test)
-;;; test.el ends here
+;;; rlr-teaching.el ends here

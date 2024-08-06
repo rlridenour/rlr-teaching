@@ -220,5 +220,102 @@
   (find-file "*-data.org" t))
 
 
+;; Functions for adding arguments in standard form to Org documents.
+
+(defun  create-args ()
+  (interactive)
+  (kill-ring-save (region-beginning) (region-end))
+  (exchange-point-and-mark)
+  (yas-expand-snippet (yas-lookup-snippet "arg-wrap-tex"))
+  (previous-line)
+  ;; (previous-line)
+  (org-beginning-of-line)
+  (forward-word)
+  (forward-char)
+  (forward-char)
+  (insert "\\underline{")
+  (org-end-of-line)
+  (insert "}")
+  (next-line)
+  (org-beginning-of-line)
+  (forward-word)
+  (insert "[\\phantom{\\(\\therefore\\)}]")
+  (next-line)
+  (next-line)
+  (org-return)
+  (org-return)
+  (org-yank)
+  (exchange-point-and-mark)
+  (yas-expand-snippet (yas-lookup-snippet "arg-wrap-html"))
+  )
+
+
+(defun  create-tex-arg ()
+  (interactive)
+  (yas-expand-snippet (yas-lookup-snippet "arg-wrap-tex"))
+  (previous-line)
+  (previous-line)
+  (forward-word)
+  (forward-char)
+  (forward-char)
+  (insert "\\underline{")
+  (org-end-of-line)
+  (insert "}")
+  (next-line)
+  (org-beginning-of-line)
+  (forward-word)
+  (insert "[\\phantom{\\(\\therefore\\)}]")
+  (next-line)
+  (next-line)
+  (org-return)
+  (org-return)
+  )
+
+;; Copy slide notes to handout notes.
+
+(defun duplicate-slide-note ()
+  (interactive)
+  (search-backward ":END:")
+  (next-line)
+  (kill-ring-save (point)
+    		  (progn
+    		    (search-forward "** ")
+    		    (beginning-of-line)
+    		    (point))
+    		  )
+  (yas-expand-snippet (yas-lookup-snippet "beamer article notes"))
+  (yank)
+  )
+
+(defun duplicate-all-slide-notes ()
+  (interactive)
+  (save-excursion
+    (end-of-buffer)
+    (newline)
+    (newline)
+    ;; Need a blank slide at the end to convert the last note.
+    (insert "** ")
+    (beginning-of-buffer)
+    (while (ignore-errors
+    	     (search-forward ":BEAMER_ENV: note"))
+      (next-line)
+      (next-line)
+      (kill-ring-save (point)
+    		      (progn
+    			(search-forward "** ")
+    			(beginning-of-line)
+    			(point))
+    		      )
+      (yas-expand-snippet (yas-lookup-snippet "beamer article notes"))
+      (yank))
+    ;; Delete the blank slide that was added earlier.
+    (end-of-buffer)
+    (search-backward "**")
+    (kill-line)
+    )
+  (save-buffer)
+  )
+
+
 (provide 'rlr-teaching)
 ;;; rlr-teaching.el ends here

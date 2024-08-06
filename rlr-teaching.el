@@ -126,6 +126,12 @@
 
 ;; Compile the files.
 
+(defun make-slides ()
+  (async-shell-command-no-window "mkslides"))
+
+(defun make-notes ()
+  (async-shell-command-no-window "mknotes"))
+
 ;; Compile lecture slides.
 (defun lecture-slides ()
   "publish org data file as beamer slides"

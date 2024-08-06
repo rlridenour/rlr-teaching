@@ -51,9 +51,7 @@
 
   ;; Create data file
   (find-file (s-concat name "/" name "-data.org"))
-  (insert (s-concat "#+TITLE: \n#+AUTHOR: Dr. Randy Ridenour\n#+DATE: \n\n"))
-  (save-buffer)
-  )
+  (yas-expand-snippet (yas-lookup-snippet "pdf-article-data")))
 
 
 ;; Create a syllabus in the currently visited directory.
@@ -80,9 +78,8 @@
 
   ;; Create data file
   (find-file (s-concat name "/" name "-data.org"))
-  (insert-file-contents "~/.config/emacs/teaching-templates/syllabus/syllabus-data.org")
-  (save-buffer)
-  )
+  (yas-expand-snippet (yas-lookup-snippet "syllabus")))
+
 
 
 ;; Create lecture slides and notes in the currently visited directory.
@@ -119,9 +116,7 @@
 
   ;; Create data file
   (find-file (s-concat name "/" name "-data.org"))
-  (insert (s-concat "#+startup: beamer\n#+TITLE: \n#+SUBTITLE: \n#+AUTHOR: Dr. Randy Ridenour\n#+BEAMER_HEADER: \\institute{Department of Philosophy}\n#+DATE: \n#+BEAMER_THEME: basicwhite[school,sections]\n#+OPTIONS: H:3\n\n"))
-  (save-buffer)
-  )
+  (yas-expand-snippet (yas-lookup-snippet "beamer-data")))
 
 
 ;; Compile the files.
@@ -149,8 +144,7 @@
   (goto-char 1)
   (while (ignore-errors
     	   (re-search-forward "begin{frame}.*]"))
-    (insert "\n \\frametitle"))
-  )
+    (insert "\n \\frametitle")))
 
 ;; Compile lecture notes.
 (defun lecture-notes ()
@@ -173,8 +167,7 @@
   (interactive)
   (save-buffer)
   (org-html-export-to-html)
-  (shell-command "canvas")
-  )
+  (shell-command "canvas"))
 
 ;; Compile Canvas HTML notes.
 (defun canvas-notes ()
@@ -246,8 +239,7 @@
   (org-return)
   (org-yank)
   (exchange-point-and-mark)
-  (yas-expand-snippet (yas-lookup-snippet "arg-wrap-html"))
-  )
+  (yas-expand-snippet (yas-lookup-snippet "arg-wrap-html")))
 
 
 (defun  create-tex-arg ()
@@ -268,8 +260,7 @@
   (next-line)
   (next-line)
   (org-return)
-  (org-return)
-  )
+  (org-return))
 
 ;; Copy slide notes to handout notes.
 
@@ -284,8 +275,7 @@
     		    (point))
     		  )
   (yas-expand-snippet (yas-lookup-snippet "beamer article notes"))
-  (yank)
-  )
+  (yank))
 
 (defun duplicate-all-slide-notes ()
   (interactive)
@@ -313,8 +303,7 @@
     (search-backward "**")
     (kill-line)
     )
-  (save-buffer)
-  )
+  (save-buffer))
 
 
 (provide 'rlr-teaching)

@@ -193,7 +193,7 @@
   (org-html-export-to-html)
   (shell-command "canvas")
   (kill-buffer)
-  ;; (delete-file "canvas-data.org")
+  (delete-file "canvas-data.org")
   (find-file "*-data.org" t))
 
 ;; Compile syllabus.

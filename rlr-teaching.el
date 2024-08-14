@@ -110,7 +110,6 @@
   (find-file (s-concat name "/canvas.org"))
   (insert-file-contents "~/.config/emacs/teaching-templates/lecture/canvas.org")
   (goto-char (point-max))
-  (insert (s-concat "#+include: \"canvas-data.org\" :minlevel 1"))
   (save-buffer)
   (kill-buffer)
 

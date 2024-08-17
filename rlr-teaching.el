@@ -31,18 +31,10 @@
 
 ;; Functions for creating handout, syllabus, and lecture files.
 
-;; Convert title to filename string.
+;; Convert title to filename string. Remove punctuation, one or two-letter words, and "the".
 
   (defun rlrt-make-filename (string)
-  (s-downcase(s-join "-" (s-split " "  (s-replace-all '(
-		   ("," . "")
-		   ("?" . "")
-		   ("!" . "")
-		   ("and " . "")
-		   ("or " . "")
-		   ("of " . "")
-		   (":" . "")) string)))))
-
+    (s-downcase  (s-join "-" (s-split " " (replace-regexp-in-string "\\bthe \\b\\|\\b[a-z]\\b \\|\\b[a-z][a-z]\\b \\|[[:punct:]]" "" string)))))
 
 ;; Create a handout in the currently visited directory.
 
@@ -344,8 +336,8 @@
 
   
   (find-file (s-concat rlrt-filename "/" rlrt-filename ".org"))
-  (insert (s-concat "#+TITLE: " rlrt-title) ?\n
-  (yas-expand-snippet (yas-lookup-snippet "rlrt-pdf-article"))))
+  (insert (s-concat "#+TITLE: " rlrt-title) ?\n)
+  (yas-expand-snippet (yas-lookup-snippet "rlrt-pdf-article")))
 
 ;; Function for converting Org mode files to QTI file for importing into Canvas using https://www.nyit.edu/its/canvas_exam_converter
 

@@ -345,7 +345,7 @@
   
   (find-file (s-concat rlrt-filename "/" rlrt-filename ".org"))
   (insert (s-concat "#+TITLE: " rlrt-title) ?\n
-  (yas-expand-snippet (yas-lookup-snippet "rlrt-pdf-article")))
+  (yas-expand-snippet (yas-lookup-snippet "rlrt-pdf-article"))))
 
 ;; Function for converting Org mode files to QTI file for importing into Canvas using https://www.nyit.edu/its/canvas_exam_converter
 

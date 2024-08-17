@@ -25,125 +25,96 @@
 
 ;;; Code:
 
-;; Set initial variable.
-
-(defvar rlrt-filename)
-
 ;; Functions for creating handout, syllabus, and lecture files.
-
-;; Convert title to filename string.
-
-  (defun rlrt-make-filename (string)
-  (s-downcase(s-join "-" (s-split " "  (s-replace-all '(
-		   ("," . "")
-		   ("?" . "")
-		   ("!" . "")
-		   ("and " . "")
-		   ("or " . "")
-		   ("of " . "")
-		   (":" . "")) string)))))
-
 
 ;; Create a handout in the currently visited directory.
 
-(defun rlrt-new-handout (rlrt-title)
-(interactive "sTitle: ")
-
-;; Make filename
-(setq rlrt-filename (rlrt-make-filename rlrt-title))
+(defun new-handout (name)
+  (interactive "sName: ")
 
   ;; Create directory
-  (make-directory rlrt-filename)
+  (make-directory name)
 
   ;; Create main org file
-  (find-file (s-concat rlrt-filename "/" rlrt-filename "-handout.org"))
+  (find-file (s-concat name "/" name "-handout.org"))
   (insert-file-contents "~/.config/emacs/teaching-templates/handout/handout.org")
   (goto-char (point-max))
-  (insert (s-concat "#+include: \"" rlrt-filename "-data.org\" :minlevel 1"))
+  (insert (s-concat "#+include: \"" name "-data.org\" :minlevel 1"))
   (save-buffer)
   (kill-buffer)
 
   ;; Create Canvas file
-  (find-file (s-concat rlrt-filename "/canvas.org"))
+  (find-file (s-concat name "/canvas.org"))
   (insert-file-contents "~/.config/emacs/teaching-templates/handout/canvas.org")
   (save-buffer)
   (kill-buffer)
 
   ;; Create data file
-  (find-file (s-concat rlrt-filename "/" rlrt-filename "-data.org"))
-    (insert (s-concat "#+TITLE: " rlrt-title) ?\n"#+AUTHOR: Dr. Randy Ridenour" ?\n "#+DATE: "(format-time-string "%B %e, %Y")))
+  (find-file (s-concat name "/" name "-data.org"))
+  (yas-expand-snippet (yas-lookup-snippet "pdf-article-data")))
 
 
 ;; Create a syllabus in the currently visited directory.
 
-(defun rlrt-new-syllabus (rlrt-title)
-  (interactive "sTitle: ")
-
-  ;; Make filename
-(setq rlrt-filename (rlrt-make-filename rlrt-title))
+(defun new-syllabus (name)
+  (interactive "sName: ")
 
   ;; Create directory
-  (make-directory rlrt-filename)
+  (make-directory name)
 
   ;; Create main org file
-  (find-file (s-concat rlrt-filename "/" rlrt-filename "-syllabus.org"))
+  (find-file (s-concat name "/" name "-syllabus.org"))
   (insert-file-contents "~/.config/emacs/teaching-templates/syllabus/syllabus.org")
   (goto-char (point-max))
-  (insert (s-concat "#+include: \"" rlrt-filename "-data.org\" :minlevel 1"))
+  (insert (s-concat "#+include: \"" name "-data.org\" :minlevel 1"))
   (save-buffer)
   (kill-buffer)
 
   ;; Create Canvas file
-  (find-file (s-concat rlrt-filename "/canvas.org"))
+  (find-file (s-concat name "/canvas.org"))
   (insert-file-contents "~/.config/emacs/teaching-templates/syllabus/canvas.org")
   (save-buffer)
   (kill-buffer)
 
   ;; Create data file
-  (find-file (s-concat rlrt-filename "/" rlrt-filename "-data.org"))
-  (insert (s-concat "#+TITLE: " rlrt-title) ?\n)
+  (find-file (s-concat name "/" name "-data.org"))
   (yas-expand-snippet (yas-lookup-snippet "syllabus")))
 
 
 
 ;; Create lecture slides and notes in the currently visited directory.
 
-(defun rlrt-new-lecture (rlrt-title)
-  (interactive "sTitle: ")
-
-    ;; Make filename
-(setq rlrt-filename (rlrt-make-filename rlrt-title))
-
+(defun new-lecture (name)
+  (interactive "sName: ")
 
   ;; Create directory
-  (make-directory rlrt-filename)
+  (make-directory name)
 
   ;; Create LaTeX Beamer org file
-  (find-file (s-concat rlrt-filename "/" rlrt-filename "-slides.org"))
+  (find-file (s-concat name "/" name "-slides.org"))
   (insert-file-contents "~/.config/emacs/teaching-templates/lecture/slides.org")
   (goto-char (point-max))
-  (insert (s-concat "#+include: \"" rlrt-filename "-data.org\" :minlevel 1"))
+  (insert (s-concat "#+include: \"" name "-data.org\" :minlevel 1"))
   (save-buffer)
   (kill-buffer)
 
   ;; Create notes org file
-  (find-file (s-concat rlrt-filename "/" rlrt-filename "-notes.org"))
+  (find-file (s-concat name "/" name "-notes.org"))
   (insert-file-contents "~/.config/emacs/teaching-templates/lecture/notes.org")
   (goto-char (point-max))
-  (insert (s-concat "#+include: \"" rlrt-filename "-data.org\" :minlevel 1"))
+  (insert (s-concat "#+include: \"" name "-data.org\" :minlevel 1"))
   (save-buffer)
   (kill-buffer)
   
   ;; Create Canvas file
-  (find-file (s-concat rlrt-filename "/canvas.org"))
+  (find-file (s-concat name "/canvas.org"))
   (insert-file-contents "~/.config/emacs/teaching-templates/lecture/canvas.org")
   (goto-char (point-max))
   (save-buffer)
   (kill-buffer)
 
   ;; Create data file
-  (find-file (s-concat rlrt-filename "/" rlrt-filename "-data.org"))
-  (insert (s-concat "#+TITLE: " rlrt-title) ?\n)
+  (find-file (s-concat name "/" name "-data.org"))
   (yas-expand-snippet (yas-lookup-snippet "beamer-data")))
 
 
@@ -333,19 +304,10 @@
     )
   (save-buffer))
 
-(defun rlrt-new-article (rlrt-title)
-  (interactive "sTitle: ")
-
-  ;; Make filename
-(setq rlrt-filename (rlrt-make-filename rlrt-title))
-
-  ;; Create directory
-  (make-directory rlrt-filename)
-
-  
-  (find-file (s-concat rlrt-filename "/" rlrt-filename ".org"))
-  (insert (s-concat "#+TITLE: " rlrt-title) ?\n
-  (yas-expand-snippet (yas-lookup-snippet "rlrt-pdf-article")))
+(defun new-article (name)
+  (interactive "sName: ")
+  (find-file (s-concat name ".org"))
+  (yas-expand-snippet (yas-lookup-snippet "pdf-article")))
 
 ;; Function for converting Org mode files to QTI file for importing into Canvas using https://www.nyit.edu/its/canvas_exam_converter
 

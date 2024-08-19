@@ -34,7 +34,7 @@
 ;; Convert title to filename string. Remove punctuation, one or two-letter words, and "the".
 
   (defun rlrt-make-filename (string)
-    (s-downcase  (s-join "-" (s-split " " (replace-regexp-in-string "\\bthe \\b\\|\\b[a-z]\\b \\|\\b[a-z][a-z]\\b \\|[[:punct:]]" "" string)))))
+    (s-downcase  (s-join "-" (s-split " " (replace-regexp-in-string "\\bthe \\b\\|\\band \\b\\|\\b[a-z]\\b \\|\\b[a-z][a-z]\\b \\|[[:punct:]]" "" string)))))
 
 ;; Create a handout in the currently visited directory.
 

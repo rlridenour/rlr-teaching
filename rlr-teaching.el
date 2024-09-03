@@ -38,33 +38,49 @@
 
 ;; Create a handout in the currently visited directory.
 
-(defun rlrt-new-handout (rlrt-title)
-(interactive "sTitle: ")
+;; (defun rlrt-new-handout (rlrt-title)
+;; (interactive "sTitle: ")
 
-;; Make filename
-(setq rlrt-filename (rlrt-make-filename rlrt-title))
+;; ;; Make filename
+;; (setq rlrt-filename (rlrt-make-filename rlrt-title))
+
+;;   ;; Create directory
+;;   (make-directory rlrt-filename)
+
+;;   ;; Create main org file
+;;   (find-file (s-concat rlrt-filename "/" rlrt-filename "-handout.org"))
+;;   (insert-file-contents "~/.config/emacs/teaching-templates/handout/handout.org")
+;;   (goto-char (point-max))
+;;   (insert (s-concat "#+include: \"" rlrt-filename "-data.org\" :minlevel 1"))
+;;   (save-buffer)
+;;   (kill-buffer)
+
+;;   ;; Create Canvas file
+;;   (find-file (s-concat rlrt-filename "/canvas.org"))
+;;   (insert-file-contents "~/.config/emacs/teaching-templates/handout/canvas.org")
+;;   (save-buffer)
+;;   (kill-buffer)
+
+;;   ;; Create data file
+;;   (find-file (s-concat rlrt-filename "/" rlrt-filename "-data.org"))
+;;     (insert (s-concat "#+TITLE: " rlrt-title) ?\n"#+AUTHOR: Dr. Randy Ridenour" ?\n "#+DATE: "(format-time-string "%B %e, %Y")))
+
+
+(defun rlrt-new-handout (rlrt-title)
+  (interactive "sTitle: ")
+
+  ;; Make filename
+  (setq rlrt-filename (rlrt-make-filename rlrt-title))
 
   ;; Create directory
   (make-directory rlrt-filename)
 
   ;; Create main org file
   (find-file (s-concat rlrt-filename "/" rlrt-filename "-handout.org"))
+  (insert (s-concat "#+TITLE: " rlrt-title) ?\n"#+AUTHOR: Dr. Randy Ridenour" ?\n "#+DATE: "(format-time-string "%B %e, %Y") ?\n)
   (insert-file-contents "~/.config/emacs/teaching-templates/handout/handout.org")
   (goto-char (point-max))
-  (insert (s-concat "#+include: \"" rlrt-filename "-data.org\" :minlevel 1"))
-  (save-buffer)
-  (kill-buffer)
-
-  ;; Create Canvas file
-  (find-file (s-concat rlrt-filename "/canvas.org"))
-  (insert-file-contents "~/.config/emacs/teaching-templates/handout/canvas.org")
-  (save-buffer)
-  (kill-buffer)
-
-  ;; Create data file
-  (find-file (s-concat rlrt-filename "/" rlrt-filename "-data.org"))
-    (insert (s-concat "#+TITLE: " rlrt-title) ?\n"#+AUTHOR: Dr. Randy Ridenour" ?\n "#+DATE: "(format-time-string "%B %e, %Y")))
-
+  (save-buffer))
 
 ;; Create a syllabus in the currently visited directory.
 
@@ -205,16 +221,22 @@
   "publish org data file as LaTeX handout and Canvas HTML"
   (interactive)
   (save-buffer)
-  (find-file "*-handout.org" t)
+  ;; (find-file "*-handout.org" t)
   (rlr/org-mkpdf)
-  (kill-buffer)
-  (shell-command "canvas-notes")
-  (find-file "canvas.org" t)
+  ;; (kill-buffer)
+  ;; (shell-command "canvas-notes")
+  ;; (find-file "canvas.org" t)
   (org-html-export-to-html)
   (shell-command "canvas")
   (kill-buffer)
   (delete-file "canvas-data.org")
   (find-file "*-data.org" t))
+
+(defun make-html ()
+  (interactive)
+  (save-buffer)
+  (org-html-export-to-html))
+
 
 ;; Compile syllabus.
 (defun make-syllabus ()

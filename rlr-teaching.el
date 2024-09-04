@@ -227,10 +227,8 @@
   ;; (shell-command "canvas-notes")
   ;; (find-file "canvas.org" t)
   (org-html-export-to-html)
-  (shell-command "canvas")
-  (kill-buffer)
-  (delete-file "canvas-data.org")
-  (find-file "*-data.org" t))
+  (shell-command "canvas-handout"))
+
 
 (defun make-html ()
   (interactive)

@@ -233,7 +233,8 @@
 (defun make-html ()
   (interactive)
   (save-buffer)
-  (org-html-export-to-html))
+  (org-html-export-to-html)
+  (shell-command "canvas-handout"))
 
 
 ;; Compile syllabus.

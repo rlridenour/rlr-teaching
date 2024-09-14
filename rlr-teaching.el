@@ -387,7 +387,7 @@
       (while (re-search-forward "^\s-*" nil t)
 	(replace-match ""))
       (beginning-of-buffer)
-      (while (re-search-forward "\\([0-9]\\)" nil t)
+      (while (re-search-forward "\\(^[0-9]\\)" nil t)
 	(replace-match "\n\\1"))
       ;; move correct answer symbol to beginning of line
       (beginning-of-buffer)

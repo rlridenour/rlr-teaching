@@ -36,36 +36,6 @@
   (defun rlrt-make-filename (string)
     (s-downcase  (s-join "-" (s-split " " (replace-regexp-in-string "\\bthe \\b\\|\\band \\b\\|\\b[a-z]\\b \\|\\b[a-z][a-z]\\b \\|[[:punct:]]" "" string)))))
 
-;; Create a handout in the currently visited directory.
-
-;; (defun rlrt-new-handout (rlrt-title)
-;; (interactive "sTitle: ")
-
-;; ;; Make filename
-;; (setq rlrt-filename (rlrt-make-filename rlrt-title))
-
-;;   ;; Create directory
-;;   (make-directory rlrt-filename)
-
-;;   ;; Create main org file
-;;   (find-file (s-concat rlrt-filename "/" rlrt-filename "-handout.org"))
-;;   (insert-file-contents "~/.config/emacs/teaching-templates/handout/handout.org")
-;;   (goto-char (point-max))
-;;   (insert (s-concat "#+include: \"" rlrt-filename "-data.org\" :minlevel 1"))
-;;   (save-buffer)
-;;   (kill-buffer)
-
-;;   ;; Create Canvas file
-;;   (find-file (s-concat rlrt-filename "/canvas.org"))
-;;   (insert-file-contents "~/.config/emacs/teaching-templates/handout/canvas.org")
-;;   (save-buffer)
-;;   (kill-buffer)
-
-;;   ;; Create data file
-;;   (find-file (s-concat rlrt-filename "/" rlrt-filename "-data.org"))
-;;     (insert (s-concat "#+TITLE: " rlrt-title) ?\n"#+AUTHOR: Dr. Randy Ridenour" ?\n "#+DATE: "(format-time-string "%B %e, %Y")))
-
-
 (defun rlrt-new-handout (rlrt-title)
   (interactive "sTitle: ")
 
@@ -371,7 +341,7 @@
       (text-mode)
       ;; convert multiple correct answer and essay questions
       (beginning-of-buffer)
-      (while (re-search-forward "-" nil t)
+      (while (re-search-forward "^[:space:]*-" nil t)
 	(replace-match ""))
       ;; Change correct multiple answer options to "*"
       (beginning-of-buffer)
@@ -404,7 +374,7 @@
       )
     )
   (browse-url "https://www.nyit.edu/its/canvas_exam_converter")
-  )
+ ) 
 
 (provide 'rlr-teaching)
 ;;; rlr-teaching.el ends here

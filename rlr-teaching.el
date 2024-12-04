@@ -330,6 +330,22 @@
   (insert (s-concat "#+TITLE: " rlrt-title) ?\n)
   (yas-expand-snippet (yas-lookup-snippet "rlrt-pdf-article")))
 
+
+(defun rlrt-new-post (rlrt-title)
+  (interactive "sTitle: ")
+
+  ;; Make filename
+(setq rlrt-filename (rlrt-make-filename rlrt-title))
+
+  ;; Create directory
+  ;; (make-directory rlrt-filename)
+
+  
+  (find-file (s-concat (format-time-string "%y-%m-%d-") rlrt-filename ".org"))
+  (insert (s-concat "#+TITLE: " rlrt-title) ?\n)
+  (yas-expand-snippet (yas-lookup-snippet "orgblogt")))
+
+
 ;; Function for converting Org mode files to QTI file for importing into Canvas using https://www.nyit.edu/its/canvas_exam_converter
 
 (defun convert-qti-nyit ()
